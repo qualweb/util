@@ -22,7 +22,7 @@ async function getAccessibleNameSelector(element: ElementHandle, page: Page): Pr
 }
 
 async function getAccessibleNameRecursion(element: ElementHandle, page: Page, recursion: boolean, isWidget: boolean): Promise<string []| undefined> {
-  let AName, ariaLabelBy, ariaLabel, title, alt, attrType, value, role, placeholder, id;
+  let AName, ariaLabelBy, ariaLabel, title, alt, attrType, value, role, placeholder, id,defaultName;
   let elementSelector = await getElementType(element);
   let name = await getElementTagName(element);
   let allowNameFromContent = await allowsNameFromContent(element);
@@ -40,11 +40,12 @@ async function getAccessibleNameRecursion(element: ElementHandle, page: Page, re
   placeholder = await getElementAttribute(element, "placeholder") ? [elementSelector] : null;
   role = await getElementRoleAName(element, page, "");
   id = await getElementAttribute(element, "id");
+  defaultName = !!(await getDefaultName(element))?["default"]:null;
 
   let referencedByAriaLabel = await isElementReferencedByAriaLabel(element, page);
   if (ariaLabelBy && ariaLabelBy !== "" && !(referencedByAriaLabel && recursion)) {
     AName = await getAccessibleNameFromAriaLabelledBy(element, ariaLabelBy, page);
-  } else if (ariaLabel && ariaLabel.trim() !== "") {
+  } else if (ariaLabel ) {
     AName = ariaLabel;
   } else if (isWidget && await isElementControl(element, page)) {
     let valueFromEmbeddedControl = !!(await getValueFromEmbeddedControl(element, page, treeSelector)) ? elementSelector : null;
@@ -54,7 +55,7 @@ async function getAccessibleNameRecursion(element: ElementHandle, page: Page, re
   } else if (name === "img") {
     AName = getFirstNotUndefined(alt, title);
   } else if (name === "input" && (attrType === "button" || attrType === "submit" || attrType === "reset")) {
-    AName = getFirstNotUndefined(value, getDefaultName(element), title);
+    AName = getFirstNotUndefined(value,defaultName , title);
   } else if (name === "input" && (typesWithLabel.indexOf(attrType) >= 0 || !attrType)) {
     if (!recursion) {
       AName = getFirstNotUndefined(await getValueFromLabel(element, id, page, treeSelector), title, placeholder);
