@@ -11,7 +11,7 @@ function elementHasContent(elementQW: QWElement, pageQW: QWPage, checkChildren: 
   if (pageQW.isValueCached(selector, method)) {
     result = pageQW.getCachedValue(selector, method);
   } else {
-    result = elementHasContentAux(elementQW, pageQW, checkChildren);
+    result = elementHasContentAux(elementQW,pageQW, checkChildren);
     pageQW.cacheValue(selector, method, result);
   }
   return result;
@@ -24,7 +24,7 @@ function elementHasContentAux(elementQW: QWElement, pageQW: QWPage, checkChildre
   let result = false;
   let name = elementQW.getElementTagName();
   if (alwaysNotVisible.includes(name)) {
-
+    //Do nothing (dont delete)
   } else if (needsControls.includes(name)) {
     const controls = elementQW.getElementProperty('controls');
     result = !!controls;
