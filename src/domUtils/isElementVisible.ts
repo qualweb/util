@@ -2,7 +2,6 @@
 
 import isElementHiddenByCSS from './isElementHiddenByCSS';
 import { QWElement } from '@qualweb/qw-element';
-import textHasTheSameColorOfBackground from './textHasTheSameColorOfBackground';
 import elementHasContent from './elementHasContent';
 import elementHasOnePixel from './elementHasOnePixel';
 import { QWPage } from '@qualweb/qw-page';

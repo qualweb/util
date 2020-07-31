@@ -1,4 +1,7 @@
 # Changelog
+## [0.3.25] - 31/07/2020
+### Added
+ - new elementHasContent implementation
 
 ## [0.3.24] - 27/07/2020
 ### Fixed
