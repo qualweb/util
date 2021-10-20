@@ -8,7 +8,7 @@ function isElementChildPresentationalAux(element: typeof window.qwElement): bool
     childPresentational = childPresentationalRole.includes(role);
   }
 
-  const parent = element.getElementParent();
+  const parent = element.getParent();
   let isParentChildPresentationalVar = false;
 
   if (parent && !childPresentational) {

@@ -1,7 +1,7 @@
 import roles from './elementImplicitRoles.json';
 
 function getImplicitRole(element: typeof window.qwElement, accessibleName: string | undefined): string | null {
-  const name = element.getElementTagName();
+  const name = element.getTagName();
   let attributes, role;
   if (name) {
     const roleValues = roles[name.toLocaleLowerCase()];
@@ -46,7 +46,7 @@ function getImplicitRole(element: typeof window.qwElement, accessibleName: strin
 }
 
 function getRoleHeading(element: typeof window.qwElement, roleValue) {
-  const ariaLevel = element.getElementAttribute('aria-level');
+  const ariaLevel = element.getAttribute('aria-level');
   let role;
   if (ariaLevel === null || parseInt(ariaLevel) > 0) {
     role = roleValue['role'];
@@ -55,8 +55,8 @@ function getRoleHeading(element: typeof window.qwElement, roleValue) {
 }
 
 function getRoleSelect(element: typeof window.qwElement, roleValue) {
-  const size = element.getElementAttribute('size');
-  const multiple = element.getElementAttribute('multiple');
+  const size = element.getAttribute('size');
+  const multiple = element.getAttribute('multiple');
   let role;
 
   if (multiple !== null && size !== null && parseInt(size, 10) > 1) {
@@ -83,8 +83,8 @@ function getRoleHeaderFooter(element: typeof window.qwElement, roleValue) {
 }
 
 function getRoleInput(element: typeof window.qwElement, roleValue) {
-  const list = element.getElementAttribute('list');
-  const type = element.getElementAttribute('type');
+  const list = element.getAttribute('list');
+  const type = element.getAttribute('type');
   let role;
 
   if (list !== null) {
@@ -98,10 +98,10 @@ function getRoleInput(element: typeof window.qwElement, roleValue) {
 }
 
 function getRoleOption(element: typeof window.qwElement, roleValue) {
-  const parent = element.getElementParent();
+  const parent = element.getParent();
   let parentName;
   let role;
-  if (parent !== null) parentName = parent.getElementTagName();
+  if (parent !== null) parentName = parent.getTagName();
 
   if (parentName === 'datalist') {
     role = roleValue['role'];
@@ -110,12 +110,12 @@ function getRoleOption(element: typeof window.qwElement, roleValue) {
 }
 
 function getRoleImg(element: typeof window.qwElement, roleValue) {
-  const alt = element.getElementAttribute('alt');
+  const alt = element.getAttribute('alt');
   let role;
   if (alt !== '') {
     role = roleValue['role'];
   } else if (
-    element.elementHasAttribute('alt') &&
+    element.hasAttribute('alt') &&
     !(
       window.AccessibilityUtils.isElementFocusable(element) ||
       window.AccessibilityUtils.elementHasGlobalARIAPropertyOrAttribute(element)
@@ -127,11 +127,11 @@ function getRoleImg(element: typeof window.qwElement, roleValue) {
 }
 
 function getRoleLi(element: typeof window.qwElement, roleValue) {
-  const parent = element.getElementParent();
+  const parent = element.getParent();
   let role;
   const parentNames = ['ol', 'ul', 'menu'];
   let parentName;
-  if (parent !== null) parentName = parent.getElementTagName();
+  if (parent !== null) parentName = parent.getTagName();
 
   if (parentName !== null && parentNames.includes(parentName)) {
     role = roleValue['role'];
@@ -145,7 +145,7 @@ function isInList(attributes, element: typeof window.qwElement) {
     const attribute = attributes[i];
     const key = attribute[0];
     const value = attribute[1];
-    const roleSpecificATT = element.getElementAttribute(key);
+    const roleSpecificATT = element.getAttribute(key);
     if (roleSpecificATT === value || (value === '' && roleSpecificATT !== null)) result = true;
   }
   return result;

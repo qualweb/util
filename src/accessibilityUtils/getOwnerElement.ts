@@ -5,10 +5,10 @@ function getOwnerElement(element: typeof window.qwElement): typeof window.qwElem
   if (ariaOwner) {
     ownerElement = ariaOwner;
   } else {
-    let parent = element.getElementParent();
+    let parent = element.getParent();
     while (!!parent && !ownerElement) {
       if (window.AccessibilityUtils.isElementInAT(parent)) ownerElement = parent;
-      parent = parent.getElementParent();
+      parent = parent.getParent();
     }
   }
   return ownerElement || null;

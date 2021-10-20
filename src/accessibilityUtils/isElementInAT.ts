@@ -8,25 +8,25 @@ function isElementInAT(element: typeof window.qwElement): boolean {
   const validRole = window.AccessibilityUtils.elementHasValidRole(element);
 
   if (!isHidden && !childPresentational && role !== 'presentation' && role !== 'none') {
-    const name = element.getElementTagName();
+    const name = element.getTagName();
     const notExposedIfEmpyTag = notExposedIfEmpty.includes(name);
     const needsToBeInsideDetailsTag = needsToBeInsideDetails.includes(name);
 
     if (notDefaultAT.includes(name) || notExposedIfEmpyTag || needsToBeInsideDetailsTag) {
       let specialCondition = false;
       if (notExposedIfEmpyTag) {
-        const text = element.getElementText();
+        const text = element.getText();
         specialCondition = !!text && text.trim() !== '';
       } else if (needsToBeInsideDetailsTag) {
-        const parent = element.getElementParent();
-        specialCondition = !!parent && parent.getElementTagName() === 'details';
+        const parent = element.getParent();
+        specialCondition = !!parent && parent.getTagName() === 'details';
       } else if (name === 'picture') {
-        const child = element.getElement('img');
+        const child = element.find('img');
         specialCondition = !!child;
       }
-      const type = element.getElementType();
+      const type = element.getType();
       const focusable = window.AccessibilityUtils.isElementFocusable(element);
-      const id = element.getElementAttribute('id');
+      const id = element.getAttribute('id');
       let ariaActivedescendant = false;
       let ariaControls = false;
       let ariaDescribedby = false;

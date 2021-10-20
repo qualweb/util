@@ -1,10 +1,10 @@
 function isElementADescendantOf(element: typeof window.qwElement, names: Array<string>, roles: Array<string>): boolean {
-  const parent = element.getElementParent();
+  const parent = element.getParent();
 
   if (parent !== null) {
     let sameRole = false;
     let sameName = false;
-    const parentName = parent.getElementTagName();
+    const parentName = parent.getTagName();
     const parentRole = window.AccessibilityUtils.getElementRole(parent);
 
     if (parentName !== null) {

@@ -10,7 +10,6 @@ import isElementADescendantOfFunction from './isElementADescendantOf';
 import isElementADescendantOfExplicitRoleFunction from './isElementADescendantOfExplicitRole';
 import getVideoMetadataFunction from './getVideoMetadata';
 import elementHasContentFunction from './elementHasContent';
-import getTrimmedTextFunction from './getTrimmedText';
 import objectElementIsNonTextFunction from './objectElementIsNonText';
 import isHumanLanguageFunction from './isHumanLanguage';
 import getTextSizeFunction from './getTextSize';
@@ -75,10 +74,6 @@ class DomUtils {
   @Cache('DomUtils.isElementHiddenByCSSAux')
   public static isElementHiddenByCSSAux(element: typeof window.qwElement): boolean {
     return isElementHiddenByCSSAuxFunction(element);
-  }
-  @Cache('DomUtils.getTrimmedText')
-  public static getTrimmedText(element: typeof window.qwElement): string {
-    return getTrimmedTextFunction(element);
   }
 }
 

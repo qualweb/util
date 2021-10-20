@@ -1,11 +1,11 @@
 function getAriaOwner(element: typeof window.qwElement): typeof window.qwElement | null {
-  const id = element.getElementAttribute('id');
-  const ariaOwns = window.qwPage.getElements('[aria-owns]', element);
+  const id = element.getAttribute('id');
+  const ariaOwns = window.qwPage.findAll('[aria-owns]', element);
   let index = 0;
   let ariaOwner: typeof window.qwElement | undefined;
   while (id && index < ariaOwns.length && !!ariaOwns) {
     const ariaElement = ariaOwns[index];
-    const ariaOwnsAttribute = ariaElement.getElementAttribute('aria-owns');
+    const ariaOwnsAttribute = ariaElement.getAttribute('aria-owns');
     if (ariaOwnsAttribute) {
       const idArray = ariaOwnsAttribute.split(' ');
       if (idArray.includes(id) && window.AccessibilityUtils.isElementInAT(ariaElement)) {

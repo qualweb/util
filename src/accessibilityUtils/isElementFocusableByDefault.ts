@@ -1,28 +1,24 @@
 function isElementFocusableByDefault(element: typeof window.qwElement): boolean {
-  const draggableAttribute = element.getElementAttribute('draggable');
+  const draggableAttribute = element.getAttribute('draggable');
 
   if (draggableAttribute && draggableAttribute === 'true') {
     return true;
   } else {
-    const elementName = element.getElementTagName();
-    const hasHref = element.elementHasAttribute('href');
-    const elementAttributeType = element.getElementAttribute('type');
+    const elementName = element.getTagName();
+    const hasHref = element.hasAttribute('href');
+    const elementAttributeType = element.getAttribute('type');
 
-    const parent = element.getElementParent();
-    let parentName;
-    let parentChildren;
+    const parent = element.getParent();
+    let parentName = '';
+    let parentChildren = new Array<typeof window.qwElement>();
 
     if (parent) {
-      parentName = parent.getElementTagName();
-      parentChildren = parent.getElementChildren();
+      parentName = parent.getTagName();
+      parentChildren = parent.getChildren();
     }
 
     switch (elementName) {
       case 'a':
-        if (hasHref) {
-          return true;
-        }
-        break;
       case 'area':
       case 'link':
         if (hasHref) {
@@ -36,7 +32,7 @@ function isElementFocusableByDefault(element: typeof window.qwElement): boolean 
           parent &&
           parentName === 'details' &&
           parentChildren &&
-          element.getElementSelector() === parentChildren[0].getElementSelector()
+          element.getSelector() === parentChildren[0].getSelector()
         );
       case 'textarea':
       case 'select':

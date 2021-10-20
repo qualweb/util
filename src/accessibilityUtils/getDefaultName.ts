@@ -1,11 +1,11 @@
 function getDefaultName(element: typeof window.qwElement): string {
-  let name = element.getElementTagName();
+  let name = element.getTagName();
   if (!name) name = '';
   let type;
   let result = '';
 
   if (name === 'input') {
-    type = element.getElementAttribute('type');
+    type = element.getAttribute('type');
   }
 
   /*if (type === "image") {

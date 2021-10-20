@@ -3,7 +3,7 @@ import isElementChildPresentationalAux from './isElementChildPresentationalAux';
 function isElementChildPresentational(element: typeof window.qwElement): boolean {
   const focusable = window.AccessibilityUtils.isElementFocusable(element);
   const hasGlobalARIA = window.AccessibilityUtils.elementHasGlobalARIAPropertyOrAttribute(element);
-  const parent = element.getElementParent();
+  const parent = element.getParent();
   let childPresentational = false;
 
   if (parent && !focusable && !hasGlobalARIA) {

@@ -1,5 +1,5 @@
 function getElementReferencedByHREF(element: typeof window.qwElement): typeof window.qwElement | null {
-  const href = element.getElementAttribute('href');
+  const href = element.getAttribute('href');
   const url = window.qwPage.getURL();
   const urlConcatWithId = url + '#';
   const lastSlash = url.lastIndexOf('/');
@@ -10,7 +10,7 @@ function getElementReferencedByHREF(element: typeof window.qwElement): typeof wi
     if (idSymbol > -1) {
       const idReferenced = href.substring(idSymbol + 1);
       if (idReferenced.trim().length > 0) {
-        const idElementReferenced = window.qwPage.getElement(`[id='${idReferenced}']` /*'#' + idReferenced*/);
+        const idElementReferenced = window.qwPage.find(`[id='${idReferenced}']` /*'#' + idReferenced*/);
         result = idElementReferenced;
       }
     }

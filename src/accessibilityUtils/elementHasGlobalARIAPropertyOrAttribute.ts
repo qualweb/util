@@ -1,7 +1,7 @@
 import ariaJSON from './ariaAttributesRoles.json';
 
 function elementHasGlobalARIAPropertyOrAttribute(element: typeof window.qwElement): boolean {
-  let elemAttribs = element.getElementAttributesName();
+  let elemAttribs = element.getAttributeNames();
   elemAttribs = elemAttribs.filter((elem) => elem.startsWith('ar'));
   let result = false;
   let i = 0;

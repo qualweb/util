@@ -1,59 +1,59 @@
 function getValueFromEmbeddedControl(element: typeof window.qwElement): string {
   const role = window.AccessibilityUtils.getElementRoleAName(element, '');
-  let name = element.getElementTagName();
+  let name = element.getTagName();
   if (!name) name = '';
   let value = '';
 
   if (role === 'textbox') {
-    const valueAT = element.getElementAttribute('value');
+    const valueAT = element.getAttribute('value');
     value = valueAT ? valueAT : '';
   } else if (role === 'combobox') {
-    const refrencedByLabel = element.getElement(`[aria-activedescendant]`);
+    const refrencedByLabel = element.find(`[aria-activedescendant]`);
     let aria_descendendant, selectedElement, optionSelected;
     if (refrencedByLabel) {
-      aria_descendendant = refrencedByLabel.getElementAttribute('role');
-      selectedElement = element.getElement(`[id="${aria_descendendant}"]`);
+      aria_descendendant = refrencedByLabel.getAttribute('role');
+      selectedElement = element.find(`[id="${aria_descendendant}"]`);
     }
 
     if (name === 'select') {
-      optionSelected = element.getElement(`[selected]`);
+      optionSelected = element.find(`[selected]`);
     }
 
-    const aria_owns = element.getElementAttribute('[aria-owns]');
-    const elementasToSelect = window.qwPage.getElement(`[id="${aria_owns}"]`);
+    const aria_owns = element.getAttribute('[aria-owns]');
+    const elementasToSelect = window.qwPage.find(`[id="${aria_owns}"]`);
 
     let elementWithAriaSelected;
-    if (elementasToSelect) elementWithAriaSelected = elementasToSelect.getElement(`[aria-selected="true"]`);
+    if (elementasToSelect) elementWithAriaSelected = elementasToSelect.find(`[aria-selected="true"]`);
 
     if (optionSelected) {
-      value = window.DomUtils.getTrimmedText(optionSelected);
+      value = optionSelected.getText() ?? '';
     } else if (selectedElement) {
-      value = window.DomUtils.getTrimmedText(selectedElement[0]);
+      value = selectedElement[0] ?? '';
     } else if (elementWithAriaSelected) {
-      value = window.DomUtils.getTrimmedText(elementWithAriaSelected[0]);
+      value = elementWithAriaSelected[0] ?? '';
     }
   } else if (role === 'listbox') {
-    const elementsWithId = element.getElements(`[id]`);
-    const elementWithAriaSelected = element.getElement(`[aria-selected="true"]`);
+    const elementsWithId = element.findAll(`[id]`);
+    const elementWithAriaSelected = element.find(`[aria-selected="true"]`);
     let selectedElement;
     let optionSelected;
 
     for (const elementWithId of elementsWithId) {
       if (selectedElement) {
-        const id = elementWithId.getElementAttribute('id');
-        selectedElement = element.getElement(`[aria-activedescendant="${id}"]`);
+        const id = elementWithId.getAttribute('id');
+        selectedElement = element.find(`[aria-activedescendant="${id}"]`);
       }
     }
 
     if (name === 'select') {
-      optionSelected = element.getElement(`[selected]`);
+      optionSelected = element.find(`[selected]`);
     }
 
-    if (selectedElement) value = window.DomUtils.getTrimmedText(elementsWithId[0]);
+    if (selectedElement) value = elementsWithId[0].getText() ?? '';
     else if (elementWithAriaSelected) {
-      value = window.DomUtils.getTrimmedText(elementWithAriaSelected);
+      value = elementWithAriaSelected.getText() ?? '';
     } else if (optionSelected) {
-      value = window.DomUtils.getTrimmedText(optionSelected);
+      value = optionSelected.getText() ?? '';
     }
   } else if (
     role === 'range' ||
@@ -62,8 +62,8 @@ function getValueFromEmbeddedControl(element: typeof window.qwElement): string {
     role === 'slider' ||
     role === 'spinbutton'
   ) {
-    const valueTextVar = element.getElementAttribute('aria-valuetext');
-    const valuenowVar = element.getElementAttribute('aria-valuenow');
+    const valueTextVar = element.getAttribute('aria-valuetext');
+    const valuenowVar = element.getAttribute('aria-valuenow');
     if (valueTextVar) value = valueTextVar;
     else if (valuenowVar) value = valuenowVar;
   }

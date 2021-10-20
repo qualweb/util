@@ -3,13 +3,13 @@ function isElementADescendantOfExplicitRole(
   names: Array<string>,
   roles: Array<string>
 ): boolean {
-  const parent = element.getElementParent();
+  const parent = element.getParent();
 
   if (parent !== null) {
     let sameRole = false;
     let sameName = false;
-    const parentName = parent.getElementTagName();
-    const parentRole = parent.getElementAttribute('role');
+    const parentName = parent.getTagName();
+    const parentRole = parent.getAttribute('role');
 
     if (parentName !== null) {
       sameName = names.includes(parentName);

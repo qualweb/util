@@ -1,5 +1,7 @@
 function getElementRoleAName(element: typeof window.qwElement, aName: string | undefined): string | null {
-  const explicitRole = element.getElementAttribute('role');
+  console.log('element:', element);
+  const explicitRole = element.getAttribute('role');
+  console.log('explicitRole:', explicitRole);
   let role = explicitRole;
   if (
     explicitRole === null ||
@@ -9,6 +11,7 @@ function getElementRoleAName(element: typeof window.qwElement, aName: string | u
   ) {
     role = window.AccessibilityUtils.getImplicitRole(element, aName);
   }
+  console.log('role: ', role);
   return role;
 }
 

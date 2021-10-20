@@ -1,11 +1,11 @@
 function isElementHidden(element: typeof window.qwElement): boolean {
-  const name = element.getElementTagName();
-  const type = element.getElementAttribute('type');
+  const name = element.getTagName();
+  const type = element.getAttribute('type');
   const typeHidden = name === 'input' && type === 'hidden';
-  const ariaHidden = element.getElementAttribute('aria-hidden') === 'true';
-  const hidden = element.getElementAttribute('hidden') !== null;
+  const ariaHidden = element.getAttribute('aria-hidden') === 'true';
+  const hidden = element.getAttribute('hidden') !== null;
   const cssHidden = window.DomUtils.isElementHiddenByCSSAux(element);
-  const parent = element.getElementParent();
+  const parent = element.getParent();
 
   let parentHidden = false;
   if (parent) {

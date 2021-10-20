@@ -7,18 +7,18 @@ function getAccessibleNameRecursion(
   isWidget: boolean
 ): string | undefined {
   let AName, alt, value, placeholder;
-  const name = element.getElementTagName();
+  const name = element.getTagName();
   const allowNameFromContent = window.AccessibilityUtils.allowsNameFromContent(element);
 
-  let ariaLabelBy = element.getElementAttribute('aria-labelledby');
-  const id = element.getElementAttribute('id');
+  let ariaLabelBy = element.getAttribute('aria-labelledby');
+  const id = element.getAttribute('id');
 
   if (ariaLabelBy !== null && !verifyAriaLabel(ariaLabelBy, id)) {
     ariaLabelBy = '';
   }
-  const ariaLabel = element.getElementAttribute('aria-label');
-  const attrType = element.getElementAttribute('type');
-  const title = element.getElementAttribute('title');
+  const ariaLabel = element.getAttribute('aria-label');
+  const attrType = element.getAttribute('type');
+  const title = element.getAttribute('title');
   const role = window.AccessibilityUtils.getElementRoleAName(element, '');
 
   const referencedByAriaLabel = window.AccessibilityUtils.isElementReferencedByAriaLabel(element);
@@ -35,16 +35,16 @@ function getAccessibleNameRecursion(
   } else if (isWidget && window.AccessibilityUtils.isElementControl(element)) {
     AName = getFirstNotUndefined(window.AccessibilityUtils.getValueFromEmbeddedControl(element), title);
   } else if (name === 'area' || (name === 'input' && attrType === 'image')) {
-    alt = element.getElementAttribute('alt');
+    alt = element.getAttribute('alt');
     AName = getFirstNotUndefined(alt, title);
   } else if (name === 'img') {
-    alt = element.getElementAttribute('alt');
+    alt = element.getAttribute('alt');
     AName = getFirstNotUndefined(alt, title);
   } else if (name === 'input' && (attrType === 'button' || attrType === 'submit' || attrType === 'reset')) {
-    value = element.getElementAttribute('value');
+    value = element.getAttribute('value');
     AName = getFirstNotUndefined(value, window.AccessibilityUtils.getDefaultName(element), title);
   } else if (name === 'input' && (!attrType || typesWithLabel.indexOf(attrType) >= 0)) {
-    placeholder = element.getElementAttribute('placeholder');
+    placeholder = element.getAttribute('placeholder');
     if (!recursion) {
       AName = getFirstNotUndefined(getValueFromLabel(element, id), title, placeholder);
     } else {
@@ -57,7 +57,7 @@ function getAccessibleNameRecursion(
       AName = getFirstNotUndefined(title);
     }
   } else if (name === 'textarea') {
-    placeholder = element.getElementAttribute('placeholder');
+    placeholder = element.getAttribute('placeholder');
     if (!recursion) {
       AName = getFirstNotUndefined(getValueFromLabel(element, id), title, placeholder);
     } else {
@@ -99,7 +99,7 @@ function getFirstNotUndefined(...args: any[]): string | undefined {
 }
 
 function getValueFromSpecialLabel(element: typeof window.qwElement, label: string): string {
-  const labelElement = element.getElement(label);
+  const labelElement = element.find(label);
   let accessNameFromLabel;
 
   if (labelElement)
@@ -110,15 +110,15 @@ function getValueFromSpecialLabel(element: typeof window.qwElement, label: strin
 
 function getValueFromLabel(element: typeof window.qwElement, id: string | null): string {
   const referencedByLabelList = new Array<typeof window.qwElement>();
-  const referencedByLabel = window.qwPage.getElements(`label[for="${id}"]`, element);
+  const referencedByLabel = window.qwPage.findAll(`label[for="${id}"]`, element);
   if (referencedByLabel) {
     referencedByLabelList.push(...referencedByLabel);
   }
-  const parent = element.getElementParent();
+  const parent = element.getParent();
   let result, accessNameFromLabel;
   const isWidget = window.AccessibilityUtils.isElementWidget(element);
 
-  if (parent && parent.getElementTagName() === 'label' && !isElementPresent(parent, referencedByLabelList)) {
+  if (parent && parent.getTagName() === 'label' && !isElementPresent(parent, referencedByLabelList)) {
     referencedByLabelList.push(parent);
   }
 
@@ -138,9 +138,9 @@ function getValueFromLabel(element: typeof window.qwElement, id: string | null):
 function isElementPresent(element: typeof window.qwElement, listElement: Array<typeof window.qwElement>): boolean {
   let result = false;
   let i = 0;
-  const elementSelector = element.getElementSelector();
+  const elementSelector = element.getSelector();
   while (i < listElement.length && !result) {
-    result = elementSelector === listElement[i].getElementSelector();
+    result = elementSelector === listElement[i].getSelector();
     i++;
   }
   return result;
@@ -154,11 +154,11 @@ function getAccessibleNameFromAriaLabelledBy(
   let result: string | undefined;
   let accessNameFromId: string | undefined;
   const isWidget = window.AccessibilityUtils.isElementWidget(element);
-  const elementID = element.getElementAttribute('id');
+  const elementID = element.getAttribute('id');
   let elem;
 
   for (const id of ListIdRefs) {
-    if (id !== '' /*&& elementID !== id*/) elem = window.qwPage.getElementByID(id);
+    if (id !== '' /*&& elementID !== id*/) elem = window.qwPage.getElementById(id);
     if (elem)
       accessNameFromId = window.AccessibilityUtils.getAccessibleNameRecursion(elem, true, isWidget && elementID !== id);
     if (accessNameFromId) {
@@ -175,8 +175,8 @@ function getAccessibleNameFromAriaLabelledBy(
 }
 
 function getTextFromCss(element: typeof window.qwElement, isWidget: boolean): string {
-  let before = cleanSVGAndNoneCode(element.getElementStyleProperty('content', ':before'));
-  let after = cleanSVGAndNoneCode(element.getElementStyleProperty('content', ':after'));
+  const before = cleanSVGAndNoneCode(element.getComputedStyle('content', ':before'));
+  const after = cleanSVGAndNoneCode(element.getComputedStyle('content', ':after'));
   const aNameList = getAccessibleNameFromChildren(element, isWidget);
   const textValue = getConcatenatedText(element, aNameList);
 
@@ -184,7 +184,7 @@ function getTextFromCss(element: typeof window.qwElement, isWidget: boolean): st
 }
 
 function getConcatenatedText(element: typeof window.qwElement, aNames: Array<string>): string {
-  return element.concatANames(aNames);
+  return element.concatAccessibleNames(aNames);
 }
 
 function cleanSVGAndNoneCode(text: string): string {
@@ -199,7 +199,7 @@ function getAccessibleNameFromChildren(element: typeof window.qwElement, isWidge
     isWidget = window.AccessibilityUtils.isElementWidget(element);
   }
   let aName;
-  const children = element.getElementChildren();
+  const children = element.getChildren();
   const elementAnames = new Array<string>();
 
   if (children) {
@@ -225,7 +225,7 @@ function verifyAriaLabel(ariaLabelBy: string, elementID: string | null) {
   let result = false;
   for (const id of elementIds) {
     if (!result && id !== '' && elementID !== id) {
-      result = window.qwPage.getElementByID(id) !== null;
+      result = window.qwPage.getElementById(id) !== null;
     }
   }
 

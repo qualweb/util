@@ -1,11 +1,11 @@
 //elementQW isInAT
 function getOwnedElements(element: typeof window.qwElement): Array<typeof window.qwElement> {
-  const children = element.getElementChildren();
+  const children = element.getChildren();
   const result = new Array<typeof window.qwElement>();
   const ariaOwnedElements = getAriaOwnedElements(element);
   result.push(...ariaOwnedElements);
   for (const child of children ?? []) {
-    result.push(...getOwnedElementsAux(child, element.getElementSelector()));
+    result.push(...getOwnedElementsAux(child, element.getSelector()));
   }
   return result;
 }
@@ -14,11 +14,11 @@ function getOwnedElementsAux(element: typeof window.qwElement, ownerSelector: st
   let ariaOwner = window.AccessibilityUtils.getAriaOwner(element);
   if (
     window.AccessibilityUtils.isElementInAT(element) &&
-    (!ariaOwner || (!!ariaOwner && ariaOwner.getElementSelector() === ownerSelector))
+    (!ariaOwner || (!!ariaOwner && ariaOwner.getSelector() === ownerSelector))
   ) {
     return [element];
   } else {
-    let children = element.getElementChildren();
+    let children = element.getChildren();
     let result = new Array<typeof window.qwElement>();
     for (const child of children ?? []) {
       result.push(...getOwnedElementsAux(child, ownerSelector));
@@ -28,13 +28,13 @@ function getOwnedElementsAux(element: typeof window.qwElement, ownerSelector: st
 }
 
 function getAriaOwnedElements(element: typeof window.qwElement): Array<typeof window.qwElement> {
-  const ariaOwns = element.getElementAttribute('aria-owns');
+  const ariaOwns = element.getAttribute('aria-owns');
   const elements = new Array<typeof window.qwElement>();
   if (ariaOwns) {
     const splitted = ariaOwns.split(',');
     for (const id of splitted ?? []) {
-      const elem = window.qwPage.getElementByID(id);
-      if (!!elem) {
+      const elem = window.qwPage.getElementById(id);
+      if (elem) {
         elements.push(elem);
       }
     }

@@ -10,22 +10,22 @@ function getAccessibleNameRecursion(
   isWidget: boolean
 ): string[] | undefined {
   let AName, ariaLabelBy;
-  const elementSelector = element.getElementSelector();
-  const name = element.getElementTagName();
+  const elementSelector = element.getSelector();
+  const name = element.getTagName();
   const allowNameFromContent = window.AccessibilityUtils.allowsNameFromContent(element);
-  ariaLabelBy = element.getElementAttribute('aria-labelledby');
+  ariaLabelBy = element.getAttribute('aria-labelledby');
 
   if (ariaLabelBy !== null && !verifyAriaLabel(ariaLabelBy)) {
     ariaLabelBy = '';
   }
-  const ariaLabel = element.getElementAttribute('aria-label') ? [elementSelector] : null;
-  const attrType = element.getElementAttribute('type');
-  const title = element.getElementAttribute('title') ? [elementSelector] : null;
-  const alt = element.getElementAttribute('alt') ? [elementSelector] : null;
-  const value = element.getElementAttribute('value') ? [elementSelector] : null;
-  const placeholder = element.getElementAttribute('placeholder') ? [elementSelector] : null;
+  const ariaLabel = element.getAttribute('aria-label') ? [elementSelector] : null;
+  const attrType = element.getAttribute('type');
+  const title = element.getAttribute('title') ? [elementSelector] : null;
+  const alt = element.getAttribute('alt') ? [elementSelector] : null;
+  const value = element.getAttribute('value') ? [elementSelector] : null;
+  const placeholder = element.getAttribute('placeholder') ? [elementSelector] : null;
   const role = window.AccessibilityUtils.getElementRoleAName(element, '');
-  const id = element.getElementAttribute('id');
+  const id = element.getAttribute('id');
   const defaultName = window.AccessibilityUtils.getDefaultName(element) ? ['default'] : null;
 
   const referencedByAriaLabel = window.AccessibilityUtils.isElementReferencedByAriaLabel(element);
@@ -98,26 +98,26 @@ function getFirstNotUndefined(...args: any[]): string | undefined {
 }
 
 function getValueFromSpecialLabel(element: typeof window.qwElement, label: string): Array<string> | undefined {
-  const labelElement = element.getElement(label);
+  const labelElement = element.find(label);
   let accessNameFromLabel, result;
 
   if (labelElement) accessNameFromLabel = getAccessibleNameRecursion(labelElement, true, false);
 
-  if (accessNameFromLabel) result = [element.getElementSelector()];
+  if (accessNameFromLabel) result = [element.getSelector()];
 
   return result;
 }
 
 function getValueFromLabel(element: typeof window.qwElement, id: string | null): Array<string> {
   const referencedByLabelList = new Array<typeof window.qwElement>();
-  const referencedByLabel = window.qwPage.getElements(`label[for="${id}"]`, element);
+  const referencedByLabel = window.qwPage.findAll(`label[for="${id}"]`, element);
   if (referencedByLabel) {
     referencedByLabelList.push(...referencedByLabel);
   }
-  const parent = element.getElementParent();
+  const parent = element.getParent();
   const isWidget = window.AccessibilityUtils.isElementWidget(element);
 
-  if (parent && parent.getElementTagName() === 'label' && !isElementPresent(parent, referencedByLabelList)) {
+  if (parent && parent.getTagName() === 'label' && !isElementPresent(parent, referencedByLabelList)) {
     referencedByLabelList.push(parent);
   }
 
@@ -125,7 +125,7 @@ function getValueFromLabel(element: typeof window.qwElement, id: string | null):
   for (const label of referencedByLabelList) {
     const accessNameFromLabel = getAccessibleNameRecursion(label, true, isWidget);
     if (accessNameFromLabel) {
-      result.push(label.getElementSelector());
+      result.push(label.getSelector());
     }
   }
 
@@ -134,9 +134,9 @@ function getValueFromLabel(element: typeof window.qwElement, id: string | null):
 function isElementPresent(element: typeof window.qwElement, listElement: Array<typeof window.qwElement>): boolean {
   let result = false;
   let i = 0;
-  const elementSelector = element.getElementSelector();
+  const elementSelector = element.getSelector();
   while (i < listElement.length && !result) {
-    result = elementSelector === listElement[i].getElementSelector();
+    result = elementSelector === listElement[i].getSelector();
     i++;
   }
   return result;
@@ -147,15 +147,15 @@ function getAccessibleNameFromAriaLabelledBy(element: typeof window.qwElement, a
   const result = new Array<string>();
   let accessNameFromId;
   const isWidget = window.AccessibilityUtils.isElementWidget(element);
-  const elementID = element.getElementAttribute('id');
+  const elementID = element.getAttribute('id');
 
   for (const id of ListIdRefs || []) {
     if (id !== '' && elementID !== id) {
-      const elem = window.qwPage.getElementByID(id);
+      const elem = window.qwPage.getElementById(id);
       if (elem) {
         accessNameFromId = getAccessibleNameRecursion(elem, true, isWidget);
         if (accessNameFromId) {
-          result.push(elem.getElementSelector());
+          result.push(elem.getSelector());
         }
       }
     }
@@ -165,7 +165,7 @@ function getAccessibleNameFromAriaLabelledBy(element: typeof window.qwElement, a
 
 function getTextFromCss(element: typeof window.qwElement, isWidget: boolean): Array<string> {
   const aNameList = getAccessibleNameFromChildren(element, isWidget);
-  const textValue = getConcatenatedText(element, []) ? element.getElementSelector() : null;
+  const textValue = getConcatenatedText(element, []) ? element.getSelector() : null;
 
   if (textValue) aNameList.push(textValue);
 
@@ -173,14 +173,14 @@ function getTextFromCss(element: typeof window.qwElement, isWidget: boolean): Ar
 }
 
 function getConcatenatedText(element: typeof window.qwElement, aNames: Array<string>): string {
-  return element.concatANames(aNames);
+  return element.concatAccessibleNames(aNames);
 }
 
 function getAccessibleNameFromChildren(element: typeof window.qwElement, isWidget: boolean): Array<string> {
   if (!isWidget) {
     isWidget = window.AccessibilityUtils.isElementWidget(element);
   }
-  const children = element.getElementChildren();
+  const children = element.getChildren();
   const result = new Array<string>();
   let aName;
 
@@ -188,7 +188,7 @@ function getAccessibleNameFromChildren(element: typeof window.qwElement, isWidge
     for (const child of children) {
       aName = getAccessibleNameRecursion(child, true, isWidget);
       if (aName) {
-        result.push(child.getElementSelector());
+        result.push(child.getSelector());
       }
     }
   }
@@ -200,7 +200,7 @@ function verifyAriaLabel(ariaLabelBy: string): boolean {
   let result = false;
   for (const id of elementIds) {
     if (!result) {
-      result = window.qwPage.getElementByID(id) !== null;
+      result = window.qwPage.getElementById(id) !== null;
     }
   }
 

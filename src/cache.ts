@@ -4,7 +4,7 @@ function Cache(methodName: string) {
     descriptor.value = function () {
       const page = window.qwPage;
       const element = <typeof window.qwElement>arguments[0];
-      const selector = element.getElementSelector();
+      const selector = element.getSelector();
       let result;
       if (page.isValueCached(selector, methodName)) {
         result = page.getCachedValue(selector, methodName);
@@ -23,7 +23,7 @@ function FullMethodCache(methodName: string) {
     descriptor.value = function () {
       const page = window.qwPage;
       const element = <typeof window.qwElement>arguments[0];
-      let selector = element.getElementSelector();
+      let selector = element.getSelector();
       for (let i = 2; i < arguments.length; i++) {
         selector += arguments[i];
       }

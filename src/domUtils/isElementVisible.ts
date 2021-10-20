@@ -6,7 +6,7 @@ function isElementVisible(element: typeof window.qwElement): boolean {
   const cssHidden = window.DomUtils.isElementHiddenByCSS(element);
   const hasContent = elementHasContent(element, true);
   const hasOnePixelHeight = elementHasOnePixel(element);
-  const opacityProperty = element.getElementStyleProperty('opacity', '');
+  const opacityProperty = element.getComputedStyle('opacity', '');
   let opacity: number | undefined;
   if (opacityProperty) {
     opacity = parseInt(opacityProperty);

@@ -1,7 +1,7 @@
 import roles from './roles.json';
 
 function getElementValidExplicitRole(element: typeof window.qwElement): string | null {
-  const role = element.getElementAttribute('role');
+  const role = element.getAttribute('role');
   let validRole: string | null = null;
   if (role) {
     if (role.trim().includes(' ')) {

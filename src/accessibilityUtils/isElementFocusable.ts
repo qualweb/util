@@ -1,5 +1,5 @@
 function isElementFocusable(element: typeof window.qwElement): boolean {
-  const disabled = element.getElementAttribute('disabled') !== null;
+  const disabled = element.getAttribute('disabled') !== null;
 
   if (disabled || window.DomUtils.isElementHiddenByCSS(element)) {
     return false;
@@ -7,7 +7,7 @@ function isElementFocusable(element: typeof window.qwElement): boolean {
     return true;
   } else {
     let tabIndexLessThanZero = false;
-    const tabindex = element.getElementAttribute('tabindex');
+    const tabindex = element.getAttribute('tabindex');
     const tabIndexExistsAndIsNumber = tabindex !== null && !isNaN(parseInt(tabindex, 10));
 
     if (tabindex && tabIndexExistsAndIsNumber) {

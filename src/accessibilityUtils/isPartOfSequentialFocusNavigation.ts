@@ -1,6 +1,6 @@
 function isPartOfSequentialFocusNavigation(element: typeof window.qwElement): boolean {
   let tabIndexLessThanZero = false;
-  const tabindex = element.getElementAttribute('tabindex');
+  const tabindex = element.getAttribute('tabindex');
   const tabIndexExistsAndIsNumber = tabindex !== null && !isNaN(parseInt(tabindex, 10));
 
   if (tabindex && tabIndexExistsAndIsNumber) {

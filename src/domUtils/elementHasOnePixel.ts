@@ -1,10 +1,10 @@
 function elementHasOnePixel(element: typeof window.qwElement): boolean {
-  const height = element.getElementStyleProperty('height', '');
-  const background = element.getElementStyleProperty('background-color', '');
-  const parent = element.getElementParent();
+  const height = element.getComputedStyle('height', '');
+  const background = element.getComputedStyle('background-color', '');
+  const parent = element.getParent();
   let parentBackGround: string | undefined;
   if (parent) {
-    parentBackGround = element.getElementStyleProperty('background-color', '');
+    parentBackGround = element.getComputedStyle('background-color', '');
   }
   return (
     !!height && height.replace(' ', '') === '1px' && (parentBackGround === background || background === 'transparent')

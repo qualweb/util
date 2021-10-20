@@ -2,7 +2,7 @@ import videoElementHasAudio from './objectElementIsNonText';
 
 function getVideoMetadata(element: typeof window.qwElement): any {
   //let src =elementQW.getElementProperty('currentSrc');
-  const duration = parseInt(element.getElementProperty('duration'));
+  const duration = element.getMediaDuration();
   const hasSoundTrack = videoElementHasAudio(element);
   const result = {
     puppeteer: {
@@ -11,9 +11,9 @@ function getVideoMetadata(element: typeof window.qwElement): any {
       error: {}
     }
   };
-  result.puppeteer.video.duration = duration;
+  result.puppeteer.video.duration = duration ?? 0;
   result.puppeteer.audio.hasSoundTrack = hasSoundTrack;
-  result.puppeteer.error = !(duration >= 0 && hasSoundTrack);
+  result.puppeteer.error = !(!duration || (duration >= 0 && hasSoundTrack));
   return result;
 }
 
