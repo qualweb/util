@@ -12,6 +12,7 @@ function Cache(methodName: string) {
         result = method.apply(this, arguments);
         page.cacheValue(selector, methodName, result);
       }
+
       return result;
     };
   };
