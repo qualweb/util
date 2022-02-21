@@ -1,23 +1,13 @@
 {
   "a": [
     {
-      "attributes": [
-        [
-          "href",
-          ""
-        ]
-      ],
+      "attributes": [["href", ""]],
       "role": "link"
     }
   ],
   "area": [
     {
-      "attributes": [
-        [
-          "href",
-          ""
-        ]
-      ],
+      "attributes": [["href", ""]],
       "role": "link"
     }
   ],
@@ -172,87 +162,37 @@
   "input": [
     {
       "attributes": [
-        [
-          "type",
-          "button"
-        ],
-        [
-          "type",
-          "image"
-        ],
-        [
-          "type",
-          "reset"
-        ],
-        [
-          "type",
-          "submit"
-        ]
+        ["type", "button"],
+        ["type", "image"],
+        ["type", "reset"],
+        ["type", "submit"]
       ],
       "role": "button"
     },
     {
-      "attributes": [
-        [
-          "type",
-          "checkbox"
-        ]
-      ],
+      "attributes": [["type", "checkbox"]],
       "role": "checkbox"
     },
     {
-      "attributes": [
-        [
-          "type",
-          "number"
-        ]
-      ],
+      "attributes": [["type", "number"]],
       "role": "spinbutton"
     },
     {
-      "attributes": [
-        [
-          "type",
-          "radio"
-        ]
-      ],
+      "attributes": [["type", "radio"]],
       "role": "radio"
     },
     {
-      "attributes": [
-        [
-          "type",
-          "range"
-        ]
-      ],
+      "attributes": [["type", "range"]],
       "role": "slider"
     },
     {
       "attributes": [
-        [
-          "type",
-          null
-        ],
-        [
-          "type",
-          "text"
-        ],
-        [
-          "type",
-          "search"
-        ],
-        [
-          "type",
-          "tel"
-        ],
-        [
-          "type",
-          "url"
-        ],
-        [
-          "type",
-          "email"
-        ]
+        ["type", null],
+        ["type", "text"],
+        ["type", "search"],
+        ["type", "tel"],
+        ["type", "url"],
+        ["type", "email"]
       ],
       "role": "combobox",
       "special": true
@@ -267,12 +207,7 @@
   ],
   "link": [
     {
-      "attributes": [
-        [
-          "href",
-          ""
-        ]
-      ],
+      "attributes": [["href", ""]],
       "role": "link"
     }
   ],

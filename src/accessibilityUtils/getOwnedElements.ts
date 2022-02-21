@@ -11,15 +11,15 @@ function getOwnedElements(element: typeof window.qwElement): Array<typeof window
 }
 
 function getOwnedElementsAux(element: typeof window.qwElement, ownerSelector: string): Array<typeof window.qwElement> {
-  let ariaOwner = window.AccessibilityUtils.getAriaOwner(element);
+  const ariaOwner = element.getAriaOwner();
   if (
-    window.AccessibilityUtils.isElementInAT(element) &&
+    element.isInTheAccessibilityTree() &&
     (!ariaOwner || (!!ariaOwner && ariaOwner.getSelector() === ownerSelector))
   ) {
     return [element];
   } else {
-    let children = element.getChildren();
-    let result = new Array<typeof window.qwElement>();
+    const children = element.getChildren();
+    const result = new Array<typeof window.qwElement>();
     for (const child of children ?? []) {
       result.push(...getOwnedElementsAux(child, ownerSelector));
     }

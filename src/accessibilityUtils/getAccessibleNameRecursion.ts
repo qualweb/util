@@ -8,7 +8,7 @@ function getAccessibleNameRecursion(
 ): string | undefined {
   let AName, alt, value, placeholder;
   const name = element.getTagName();
-  const allowNameFromContent = window.AccessibilityUtils.allowsNameFromContent(element);
+  const allowNameFromContent = element.allowsNameFromContent();
 
   let ariaLabelBy = element.getAttribute('aria-labelledby');
   const id = element.getAttribute('id');
@@ -21,7 +21,7 @@ function getAccessibleNameRecursion(
   const title = element.getAttribute('title');
   const role = window.AccessibilityUtils.getElementRoleAName(element, '');
 
-  const referencedByAriaLabel = window.AccessibilityUtils.isElementReferencedByAriaLabel(element);
+  const referencedByAriaLabel = element.isReferencedByAriaLabel();
   if (name === 'svg') {
     AName = getAccessibleNameSVGRecursion(element, recursion);
   } else if (ariaLabelBy && ariaLabelBy !== '' && !(referencedByAriaLabel && recursion)) {
@@ -32,8 +32,8 @@ function getAccessibleNameRecursion(
     }
   } else if (ariaLabel && ariaLabel.trim() !== '') {
     AName = ariaLabel;
-  } else if (isWidget && window.AccessibilityUtils.isElementControl(element)) {
-    AName = getFirstNotUndefined(window.AccessibilityUtils.getValueFromEmbeddedControl(element), title);
+  } else if (isWidget && element.isOfTypeControl()) {
+    AName = getFirstNotUndefined(element.getValueFromEmbeddedControl(), title);
   } else if (name === 'area' || (name === 'input' && attrType === 'image')) {
     alt = element.getAttribute('alt');
     AName = getFirstNotUndefined(alt, title);
@@ -116,7 +116,7 @@ function getValueFromLabel(element: typeof window.qwElement, id: string | null):
   }
   const parent = element.getParent();
   let result, accessNameFromLabel;
-  const isWidget = window.AccessibilityUtils.isElementWidget(element);
+  const isWidget = element.isWidget();
 
   if (parent && parent.getTagName() === 'label' && !isElementPresent(parent, referencedByLabelList)) {
     referencedByLabelList.push(parent);
@@ -153,7 +153,7 @@ function getAccessibleNameFromAriaLabelledBy(
   const ListIdRefs = ariaLabelId.split(' ');
   let result: string | undefined;
   let accessNameFromId: string | undefined;
-  const isWidget = window.AccessibilityUtils.isElementWidget(element);
+  const isWidget = element.isWidget();
   const elementID = element.getAttribute('id');
   let elem;
 
@@ -196,7 +196,7 @@ function cleanSVGAndNoneCode(text: string): string {
 
 function getAccessibleNameFromChildren(element: typeof window.qwElement, isWidget: boolean): Array<string> {
   if (!isWidget) {
-    isWidget = window.AccessibilityUtils.isElementWidget(element);
+    isWidget = element.isWidget();
   }
   let aName;
   const children = element.getChildren();
@@ -205,7 +205,7 @@ function getAccessibleNameFromChildren(element: typeof window.qwElement, isWidge
   if (children) {
     for (const child of children) {
       const role = window.AccessibilityUtils.getElementRoleAName(child, '');
-      if (!window.DomUtils.isElementHidden(child) && role !== 'presentation' && role !== 'none') {
+      if (!child.isHidden() && role !== 'presentation' && role !== 'none') {
         aName = window.AccessibilityUtils.getAccessibleNameRecursion(child, true, isWidget);
         if (aName) {
           elementAnames.push(aName);

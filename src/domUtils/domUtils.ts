@@ -17,7 +17,7 @@ import getTextSizeFunction from './getTextSize';
 import { Cache, FullMethodCache } from '../cache';
 
 /**
- * DOM Utilities namespace
+ * DOM Utilities class
  *
  */
 class DomUtils {

@@ -8,7 +8,7 @@ function getAriaOwner(element: typeof window.qwElement): typeof window.qwElement
     const ariaOwnsAttribute = ariaElement.getAttribute('aria-owns');
     if (ariaOwnsAttribute) {
       const idArray = ariaOwnsAttribute.split(' ');
-      if (idArray.includes(id) && window.AccessibilityUtils.isElementInAT(ariaElement)) {
+      if (idArray.includes(id) && ariaElement.isInTheAccessibilityTree()) {
         ariaOwner = ariaElement;
       }
     }

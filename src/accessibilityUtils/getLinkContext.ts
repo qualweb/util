@@ -7,8 +7,8 @@ function getLinkContext(element: typeof window.qwElement): Array<string> {
   let ariaDescribedBy = new Array<string>();
   if (ariaDescribedByATT) ariaDescribedBy = ariaDescribedByATT.split(' ');
   if (parent) {
-    const role = window.AccessibilityUtils.getElementRole(parent);
-    const inAT = window.AccessibilityUtils.isElementInAT(parent);
+    const role = parent.getRole();
+    const inAT = parent.isInTheAccessibilityTree();
     const tagName = parent.getTagName();
     const id = parent.getAttribute('id');
     if (
@@ -33,8 +33,8 @@ function getLinkContextAux(
 ): void {
   const parent = element.getParent();
   if (parent) {
-    const role = window.AccessibilityUtils.getElementRole(parent);
-    const inAT = window.AccessibilityUtils.isElementInAT(parent); //isElementInAT(when added html list)
+    const role = parent.getRole();
+    const inAT = parent.isInTheAccessibilityTree(); //isElementInAT(when added html list)
     const tagName = parent.getTagName();
     const id = parent.getAttribute('id');
     if (

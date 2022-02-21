@@ -4,7 +4,7 @@ function getDisabledWidgets(): Array<typeof window.qwElement> {
   const disabledElements = new Array<typeof window.qwElement>();
   let disable: boolean, ariaDisable: boolean, parent: typeof window.qwElement | null, parentTag: string;
   for (const element of elements ?? []) {
-    const isWidget = window.AccessibilityUtils.isElementWidget(element);
+    const isWidget = element.isWidget();
     disable = element.getAttribute('disabled') !== null;
     ariaDisable = element.getAttribute('aria-disabled') !== null;
     parent = element.getParent();

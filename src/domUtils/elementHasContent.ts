@@ -31,16 +31,5 @@ function elementHasContent(element: typeof window.qwElement, checkChildren: bool
   }
   return result || checkChildren;
 }
-/*function isElementGroupingOrSection(elementQW:QWElement):boolean{
-  let tagName =  elementQW.getElementTagName();
-  let isGroupingOrSection = sectionAndGrouping.includes(tagName);
-  let children= elementQW.getElementChildren();
-  let counter = 0;
-  while(isGroupingOrSection && counter < children.length){
-    isGroupingOrSection = isElementGroupingOrSection(children[counter])
-    counter++;
-  }
-  return isGroupingOrSection;
-}*/
 
 export default elementHasContent;

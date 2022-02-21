@@ -6,7 +6,7 @@ function isPartOfSequentialFocusNavigation(element: typeof window.qwElement): bo
   if (tabindex && tabIndexExistsAndIsNumber) {
     tabIndexLessThanZero = parseInt(tabindex, 10) < 0;
   }
-  const focusable = window.AccessibilityUtils.isElementFocusable(element);
+  const focusable = element.isFocusable();
   return (focusable && tabIndexExistsAndIsNumber && !tabIndexLessThanZero) || (focusable && !tabIndexExistsAndIsNumber);
 }
 

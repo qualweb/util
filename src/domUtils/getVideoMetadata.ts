@@ -1,14 +1,13 @@
 import videoElementHasAudio from './objectElementIsNonText';
 
 function getVideoMetadata(element: typeof window.qwElement): any {
-  //let src =elementQW.getElementProperty('currentSrc');
   const duration = element.getMediaDuration();
   const hasSoundTrack = videoElementHasAudio(element);
   const result = {
     puppeteer: {
-      video: { duration: {} },
-      audio: { hasSoundTrack: {} },
-      error: {}
+      video: { duration: 0 },
+      audio: { hasSoundTrack: false },
+      error: false
     }
   };
   result.puppeteer.video.duration = duration ?? 0;

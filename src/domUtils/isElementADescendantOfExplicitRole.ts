@@ -22,7 +22,7 @@ function isElementADescendantOfExplicitRole(
       return true;
     }
 
-    return window.DomUtils.isElementADescendantOfExplicitRole(parent, names, roles);
+    return parent.isDescendantOfExplicitRole(names, roles);
   }
 
   return false;

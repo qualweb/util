@@ -5,10 +5,9 @@ function getElementRoleAName(element: typeof window.qwElement, aName: string | u
   if (
     explicitRole === null ||
     ((explicitRole === 'none' || explicitRole === 'presentation') &&
-      (window.AccessibilityUtils.isElementFocusable(element) ||
-        window.AccessibilityUtils.elementHasGlobalARIAPropertyOrAttribute(element)))
+      (element.isFocusable() || element.hasGlobalARIAPropertyOrAttribute()))
   ) {
-    role = window.AccessibilityUtils.getImplicitRole(element, aName);
+    role = element.getImplicitRole(aName);
   }
 
   return role;

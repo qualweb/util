@@ -20,7 +20,7 @@ function getAccessibleNameSVGRecursion(element: typeof window.qwElement, recursi
 
   //console.log((DomUtil.isElementHidden(element) && !recursion) +"/"+ hasParentOfName(element,noAccessibleObjectOrChild) +"/"+ (noAccessibleObject.indexOf(tag) >= 0) +"/"+ (noAccessibleObjectOrChild.indexOf(tag) >= 0) +"/"+ regex.test(tag))
   if (
-    (window.DomUtils.isElementHidden(element) ||
+    (element.isHidden() ||
       hasParentOfName(element, noAccessibleObjectOrChild) ||
       noAccessibleObject.indexOf(tag) >= 0 ||
       noAccessibleObjectOrChild.indexOf(tag) >= 0 ||
@@ -31,7 +31,7 @@ function getAccessibleNameSVGRecursion(element: typeof window.qwElement, recursi
   } else if (ariaLabelBy && ariaLabelBy !== '' && !(referencedByAriaLabel && recursion)) {
     AName = getAccessibleNameFromAriaLabelledBy(element, ariaLabelBy);
   } else if (elementsLikeHtml.indexOf(tag) >= 0) {
-    AName = window.AccessibilityUtils.getAccessibleName(element);
+    AName = element.getAccessibleName();
   } else if (ariaLabel && ariaLabel.trim() !== '') {
     AName = ariaLabel;
   } else if (title && title.trim() !== '') {

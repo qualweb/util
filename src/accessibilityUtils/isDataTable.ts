@@ -2,7 +2,7 @@ function isDataTable(element: typeof window.qwElement): boolean {
   // based on https://www.w3.org/TR/WCAG20-TECHS/H43.html
   // and https://fae.disability.illinois.edu/rulesets/TABLE_5/
   // it is considered that AccessibilityUtils element is already a <table> element
-  const accessibleName = window.AccessibilityUtils.getAccessibleName(element);
+  const accessibleName = element.getAccessibleName();
   const thElem = element.findAll('th');
   const tdHeaders = element.findAll('td[scope]');
   const tdWithHeaders = element.findAll('td[headers]');

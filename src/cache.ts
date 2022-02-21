@@ -1,3 +1,9 @@
+/**
+ * Caches the value of a method called on an element.
+ *
+ * @param methodName Name of the method called on the element
+ * @returns value of the method that was called, either from the method or from the cache
+ */
 function Cache(methodName: string) {
   return function (_target: unknown, _propertyKey: string, descriptor: PropertyDescriptor): void {
     const method = descriptor.value;
@@ -18,6 +24,12 @@ function Cache(methodName: string) {
   };
 }
 
+/**
+ * Caches the values of a method called on an element.
+ *
+ * @param methodName Name of the method called on the element
+ * @returns value of the method that was called, either from the method or from the cache
+ */
 function FullMethodCache(methodName: string) {
   return function (_target: unknown, _propertyKey: string, descriptor: PropertyDescriptor): void {
     const method = descriptor.value;

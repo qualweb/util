@@ -5,7 +5,7 @@ function isElementADescendantOf(element: typeof window.qwElement, names: Array<s
     let sameRole = false;
     let sameName = false;
     const parentName = parent.getTagName();
-    const parentRole = window.AccessibilityUtils.getElementRole(parent);
+    const parentRole = parent.getRole();
 
     if (parentName !== null) {
       sameName = names.includes(parentName);
@@ -18,7 +18,7 @@ function isElementADescendantOf(element: typeof window.qwElement, names: Array<s
       return true;
     }
 
-    return window.DomUtils.isElementADescendantOf(parent, names, roles);
+    return parent.isDescendantOf(names, roles);
   }
 
   return false;

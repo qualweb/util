@@ -1,7 +1,7 @@
 import { childPresentationalRole } from '../accessibilityUtils/constants';
 
 function isElementChildPresentationalAux(element: typeof window.qwElement): boolean {
-  const role = window.AccessibilityUtils.getElementRole(element);
+  const role = element.getRole();
 
   let childPresentational = false;
   if (role !== null) {

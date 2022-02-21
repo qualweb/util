@@ -1,20 +1,20 @@
 import { notDefaultAT, needsToBeInsideDetails, notExposedIfEmpty } from './constants';
 
-function isElementInAT(element: typeof window.qwElement): boolean {
-  const childPresentational = window.AccessibilityUtils.isElementChildPresentational(element);
-  const isHidden = window.DomUtils.isElementHidden(element);
+function isElementInAccessibilityTree(element: typeof window.qwElement): boolean {
+  const childPresentational = element.isChildPresentational();
+  const isHidden = element.isHidden();
+  const role = element.getRole();
+
   let result = false;
-  const role = window.AccessibilityUtils.getElementRole(element);
-  const validRole = window.AccessibilityUtils.elementHasValidRole(element);
 
   if (!isHidden && !childPresentational && role !== 'presentation' && role !== 'none') {
     const name = element.getTagName();
-    const notExposedIfEmpyTag = notExposedIfEmpty.includes(name);
+    const notExposedIfEmptyTag = notExposedIfEmpty.includes(name);
     const needsToBeInsideDetailsTag = needsToBeInsideDetails.includes(name);
 
-    if (notDefaultAT.includes(name) || notExposedIfEmpyTag || needsToBeInsideDetailsTag) {
+    if (notDefaultAT.includes(name) || notExposedIfEmptyTag || needsToBeInsideDetailsTag) {
       let specialCondition = false;
-      if (notExposedIfEmpyTag) {
+      if (notExposedIfEmptyTag) {
         const text = element.getText();
         specialCondition = !!text && text.trim() !== '';
       } else if (needsToBeInsideDetailsTag) {
@@ -25,39 +25,40 @@ function isElementInAT(element: typeof window.qwElement): boolean {
         specialCondition = !!child;
       }
       const type = element.getType();
-      const focusable = window.AccessibilityUtils.isElementFocusable(element);
+      const focusable = element.isFocusable();
       const id = element.getAttribute('id');
-      let ariaActivedescendant = false;
+      let ariaActiveDescendant = false;
       let ariaControls = false;
-      let ariaDescribedby = false;
+      let ariaDescribedBy = false;
       let ariaDetails = false;
-      let ariaErrormessage = false;
-      let ariaFlowto = false;
-      let ariaLabelledby = false;
+      let ariaErrorMessage = false;
+      let ariaFlowTo = false;
+      let ariaLabelledBy = false;
       let ariaOwns = false;
       if (id !== null) {
-        ariaActivedescendant = window.DomUtils.elementIdIsReferenced(element, id, 'aria-activedescendant');
+        ariaActiveDescendant = window.DomUtils.elementIdIsReferenced(element, id, 'aria-activedescendant');
         ariaControls = window.DomUtils.elementIdIsReferenced(element, id, ' aria-controls');
-        ariaDescribedby = window.DomUtils.elementIdIsReferenced(element, id, ' aria-describedby');
+        ariaDescribedBy = window.DomUtils.elementIdIsReferenced(element, id, ' aria-describedby');
         ariaDetails = window.DomUtils.elementIdIsReferenced(element, id, ' aria-details');
-        ariaErrormessage = window.DomUtils.elementIdIsReferenced(element, id, 'aria-errormessage');
-        ariaFlowto = window.DomUtils.elementIdIsReferenced(element, id, 'aria-flowto');
-        ariaLabelledby = window.DomUtils.elementIdIsReferenced(element, id, 'aria-labelledby');
+        ariaErrorMessage = window.DomUtils.elementIdIsReferenced(element, id, 'aria-errormessage');
+        ariaFlowTo = window.DomUtils.elementIdIsReferenced(element, id, 'aria-flowto');
+        ariaLabelledBy = window.DomUtils.elementIdIsReferenced(element, id, 'aria-labelledby');
         ariaOwns = window.DomUtils.elementIdIsReferenced(element, id, 'aria-owns');
       }
-      const globalWaiARIA = window.AccessibilityUtils.elementHasGlobalARIAPropertyOrAttribute(element);
+      const globalWaiARIA = element.hasGlobalARIAPropertyOrAttribute();
+      const validRole = element.hasValidRole();
 
       result =
         specialCondition ||
         type === 'text' ||
         focusable ||
-        ariaActivedescendant ||
+        ariaActiveDescendant ||
         ariaControls ||
-        ariaDescribedby ||
+        ariaDescribedBy ||
         ariaDetails ||
-        ariaErrormessage ||
-        ariaFlowto ||
-        ariaLabelledby ||
+        ariaErrorMessage ||
+        ariaFlowTo ||
+        ariaLabelledBy ||
         ariaOwns ||
         validRole ||
         globalWaiARIA;
@@ -69,4 +70,4 @@ function isElementInAT(element: typeof window.qwElement): boolean {
   return result;
 }
 
-export default isElementInAT;
+export default isElementInAccessibilityTree;

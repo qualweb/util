@@ -12,7 +12,7 @@ function getAccessibleNameRecursion(
   let AName, ariaLabelBy;
   const elementSelector = element.getSelector();
   const name = element.getTagName();
-  const allowNameFromContent = window.AccessibilityUtils.allowsNameFromContent(element);
+  const allowNameFromContent = element.allowsNameFromContent();
   ariaLabelBy = element.getAttribute('aria-labelledby');
 
   if (ariaLabelBy !== null && !verifyAriaLabel(ariaLabelBy)) {
@@ -28,15 +28,13 @@ function getAccessibleNameRecursion(
   const id = element.getAttribute('id');
   const defaultName = window.AccessibilityUtils.getDefaultName(element) ? ['default'] : null;
 
-  const referencedByAriaLabel = window.AccessibilityUtils.isElementReferencedByAriaLabel(element);
+  const referencedByAriaLabel = element.isReferencedByAriaLabel();
   if (ariaLabelBy && ariaLabelBy !== '' && !(referencedByAriaLabel && recursion)) {
     AName = getAccessibleNameFromAriaLabelledBy(element, ariaLabelBy);
   } else if (ariaLabel) {
     AName = ariaLabel;
-  } else if (isWidget && window.AccessibilityUtils.isElementControl(element)) {
-    const valueFromEmbeddedControl = window.AccessibilityUtils.getValueFromEmbeddedControl(element)
-      ? elementSelector
-      : null;
+  } else if (isWidget && element.isOfTypeControl()) {
+    const valueFromEmbeddedControl = element.getValueFromEmbeddedControl() ? elementSelector : null;
     AName = getFirstNotUndefined(valueFromEmbeddedControl, title);
   } else if (name === 'area' || (name === 'input' && attrType === 'image')) {
     AName = getFirstNotUndefined(alt, title);
@@ -115,7 +113,7 @@ function getValueFromLabel(element: typeof window.qwElement, id: string | null):
     referencedByLabelList.push(...referencedByLabel);
   }
   const parent = element.getParent();
-  const isWidget = window.AccessibilityUtils.isElementWidget(element);
+  const isWidget = element.isWidget();
 
   if (parent && parent.getTagName() === 'label' && !isElementPresent(parent, referencedByLabelList)) {
     referencedByLabelList.push(parent);
@@ -146,7 +144,7 @@ function getAccessibleNameFromAriaLabelledBy(element: typeof window.qwElement, a
   const ListIdRefs = ariaLabelId.split(' ');
   const result = new Array<string>();
   let accessNameFromId;
-  const isWidget = window.AccessibilityUtils.isElementWidget(element);
+  const isWidget = element.isWidget();
   const elementID = element.getAttribute('id');
 
   for (const id of ListIdRefs || []) {
@@ -178,7 +176,7 @@ function getConcatenatedText(element: typeof window.qwElement, aNames: Array<str
 
 function getAccessibleNameFromChildren(element: typeof window.qwElement, isWidget: boolean): Array<string> {
   if (!isWidget) {
-    isWidget = window.AccessibilityUtils.isElementWidget(element);
+    isWidget = element.isWidget();
   }
   const children = element.getChildren();
   const result = new Array<string>();

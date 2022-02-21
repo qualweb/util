@@ -1,10 +1,7 @@
 function textHasTheSameColorOfBackground(element: typeof window.qwElement): boolean {
   const color = element.getComputedStyle('color', '');
   const background = element.getComputedStyle('background-color', '');
-  let text = element.getText();
-  if (text) {
-    text = text.trim();
-  }
+  const text = element.getText()?.trim();
   return color === background && !!text;
 }
 

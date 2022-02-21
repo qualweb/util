@@ -9,7 +9,7 @@ function isElementHidden(element: typeof window.qwElement): boolean {
 
   let parentHidden = false;
   if (parent) {
-    parentHidden = window.DomUtils.isElementHidden(parent);
+    parentHidden = parent.isHidden();
   }
 
   return cssHidden || hidden || ariaHidden || parentHidden || typeHidden;
