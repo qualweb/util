@@ -37,7 +37,7 @@
   "devDependencies": {
     "@qualweb/dom": "0.2.4",
     "@qualweb/qw-page": "0.3.0-alpha3",
-    "@qualweb/types": "0.8.0-alpha6",
+    "@qualweb/types": "^0.8.0-alpha7",
     "@tsconfig/recommended": "^1.0.1",
     "@types/node": "^16.11.13",
     "@types/string-pixel-width": "^1.7.2",
@@ -58,6 +58,7 @@
     "webpack-cli": "^4.1.1"
   },
   "dependencies": {
+    "@qualweb/util": "^0.6.0-alpha3",
     "franc-min": "^6.0.0",
     "server-text-width": "^1.0.2",
     "string-pixel-width": "^1.10.0"
